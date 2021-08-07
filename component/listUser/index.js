@@ -43,6 +43,11 @@ export default function ListUser(props){
                     <ListItem
                     key={user.id}
                     bottomDivider
+                    onPress={() => {
+                        props.navigation.navigation.navigate('DetailUser', {
+                            userId :user.id
+                        })
+                    }}
                     >
                         <ListItem.Chevron />
                         <Avatar 
