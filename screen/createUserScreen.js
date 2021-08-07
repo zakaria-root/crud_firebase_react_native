@@ -1,22 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import CreateUserForm from '../component/createUserForm';
 
-const CreatUserScreen = () => {
+const CreatUserScreen = (props) => {
     return(
-        <View style={styles.container}>
-            <Text>hi in createUserScreen page</Text>
-        </View>
+            <ScrollView>
+            <CreateUserForm navigation={props} />
+            </ScrollView>
     )
 }
 
 export default CreatUserScreen;
 
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });

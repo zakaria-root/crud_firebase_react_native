@@ -1,24 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View} from 'react-native';
+import ListUser from '../component/listUser';
 
-const ListUserScreen = () => {
+const ListUserScreen = (props) => {
     return(
-        <View style={styles.container}>
-            <Text>hi in ListUserScreen page</Text>
+        <View>
+            <ListUser navigation={props}/>
         </View>
     )
 }
 
 export default ListUserScreen;
 
-
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
