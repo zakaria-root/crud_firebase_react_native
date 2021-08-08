@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
             height: 10,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 20,
+        shadowRadius: 24,
         elevation: 24,
     },
     title:{
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     },
     email:{
         fontSize: 17,
+        color : "#000",
         opacity:.5
     },
     phone:{

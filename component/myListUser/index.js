@@ -11,6 +11,8 @@ import styles from './styles';
 import firebase from '../../database/firebase';
 import FormButton from '../createUserForm/FormButton';
 import {Image } from 'react-native-elements';
+import { TouchableOpacity, TouchableHighlight} from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 
 
 export default function MyListUser(props){
@@ -35,6 +37,8 @@ export default function MyListUser(props){
         setUsers(users);
     })
     },[]);
+    
+    
 
     const data = users.map(user => {
                     return {
@@ -83,8 +87,13 @@ export default function MyListUser(props){
                     inputRange : opacityInputRange,
                     outputRange: [1,1,1,0]
                 })
+                
                 return(
-                    <Animated.View style={[styles.containerItem, {transform:[{scale}], opacity}]}>
+                        <TouchableOpacity onPress={() => {
+                            props.navigation.navigation.navigate('DetailUser',{
+                                userId: item.key
+                            })}}>
+                        <Animated.View style={[styles.containerItem, {transform:[{scale}], opacity}]}>
                         <Image 
                         source={{ uri : item.image }}
                         style={styles.image}
@@ -95,6 +104,9 @@ export default function MyListUser(props){
                             <Text style={styles.phone} > {item.phone} </Text>
                         </View>
                     </Animated.View>
+                    </TouchableOpacity>
+                    
+                    
                 )
             }
             }

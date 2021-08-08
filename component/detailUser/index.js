@@ -4,12 +4,14 @@ import {
     Text, 
     ScrollView, 
     Button,
-    ActivityIndicator
+    ActivityIndicator,
+    ImageBackground
 } from 'react-native';
 import styles from './styles';
 import firebase from '../../database/firebase';
 import Input from 'react-native-input-style';
 import { Alert } from 'react-native';
+import FormButton from '../createUserForm/FormButton';
 
 const DetailUser = (props) => {
     const [name, setName] = useState("");
@@ -18,7 +20,8 @@ const DetailUser = (props) => {
     const [isLoaded, setIsLoaded] = useState(true);
     
     const getEementById = async (id) => {
-        await firebase.db.collection('users').doc(id).get().then((doc) => {
+        await firebase.db.collection('users').doc(id).get()
+        .then((doc) => {
             setName(doc.data().name);
             setEmail(doc.data().email);
             setPhone(doc.data().phone);
@@ -30,31 +33,39 @@ const DetailUser = (props) => {
         });
         
     }
+
     useEffect(() => {
         getEementById(props.navigation.route.params.userId)
     })
     
-    const updateUser = async () => {
-        setIsLoaded(true)
-        const id = props.navigation.route.params.userId;
-        const refdb = firebase.db.collection('users').doc(id)
-        await refdb.set({
-            id,
-            name, 
-            email, 
-            phone
-        }).then(() => {
-            setName("")
-            setEmail("")
-            setPhone("")
-            props.navigation.navigation.navigate('ListUser')
-            1
-        })
-        .catch((err) => {
-            
-            alert(err)
-           
-        })
+    const updateUser = () => {
+        
+        Alert.alert(
+            "Update User",
+            "are you shure you update this user",
+            [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+            },
+            { text: "Yes", onPress: async () => {
+                
+                const refdb = firebase.db.collection('users').doc(props.navigation.route.params.userId)
+                await refdb.set({
+                    id,
+                    name, 
+                    email, 
+                    phone
+                }).then(() => {
+                    props.navigation.navigation.navigate('ListUser')
+                })
+                .catch((err) => {
+                    alert(err)
+                })
+              } }
+            ]
+          );
+        
         
     }
 
@@ -67,7 +78,7 @@ const DetailUser = (props) => {
                 text: "Cancel",
                 onPress: () => console.log("Cancel Pressed"),
               },
-              { text: "OK", onPress: async () => {
+              { text: "Yes", onPress: async () => {
                 const refdb = firebase.db.collection('users').doc(props.navigation.route.params.userId)
                 await refdb.delete()
                 props.navigation.navigation.navigate('ListUser')
@@ -77,28 +88,17 @@ const DetailUser = (props) => {
     }
     return isLoaded ? (
     <View style={styles.cercleContainer}>
-        <ActivityIndicator color="#8F44FF" size={40}/>
+        <ActivityIndicator color="#AD84BF" size={45}/>
     </View>
     ) : (
-        <ScrollView>
-            <View style={styles.container}>
-            <View style={styles.buttonContainer}>
-            <Button
-            title="Update User" 
-            onPress={updateUser}
-            color="#8F44FF"
+        <ScrollView style={styles.container}>
+            <ImageBackground
+            blurRadius={20}
+            style={styles.image}
+            source={{ uri : 'https://c4.wallpaperflare.com/wallpaper/757/447/693/flowers-macro-roses-water-drops-wallpaper-preview.jpg'}}
             />
-            </View>
-            <View style={styles.buttonContainerRed}>
-
-            <Button
-            title="Delet User" 
-            onPress={deletUser}
-            color="red"
-            />
-            </View>
-
             <View style={styles.formContainer}>
+                <Text style={styles.title}>User Information</Text>
             <Input
             onlyEnglish
             id="name"
@@ -112,9 +112,9 @@ const DetailUser = (props) => {
                 setName(name)
             }}
             initialValue={name}
-            borderColor="#8F44FF"
-            />
             
+            borderColor="#AD84BF"
+            />
             <Input
             id="email"
             label="Email"
@@ -127,7 +127,7 @@ const DetailUser = (props) => {
             }}
             initialValue={email}
             email
-            borderColor="#8F44FF"
+            borderColor="#AD84BF"
             />
             <Input
             id="phone"
@@ -140,12 +140,17 @@ const DetailUser = (props) => {
                 setPhone(phone)
             }}
             initialValue={phone}
-            borderColor="#8F44FF"
+            borderColor="#AD84BF"
             />
+            <View style={styles.button}>
+            <FormButton title='Update User' onPress={updateUser} bgColor="#5B458C"/>
             </View>
-        </View>
+            <View style={styles.button2}>
+            <FormButton title='Delete User' onPress={deletUser} bgColor="#BF216B"/>
+            </View>
+            </View>
+            
         </ScrollView>
-        
     )
 }
 

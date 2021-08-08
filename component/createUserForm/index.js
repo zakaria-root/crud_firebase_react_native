@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text} from 'react-native';
+import { 
+    View, 
+    Text, 
+    ImageBackground, 
+    ActivityIndicator
+} from 'react-native';
 import styles from './styles';
 import Input from 'react-native-input-style';
 import FormButton from './FormButton';
@@ -11,25 +16,38 @@ const CreateUserForm = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
     
     const submit = async () => {
         if (name !== '' && email !== '' && phone !== '') {
+            setIsLoaded(true);
             await firebase.db.collection('users').add({
                 name: name,
                 email: email,
                 phone: phone
             }).then(() => {
-                alert("user saved")
+                alert("user created")
+                setIsLoaded(false)
                 props.navigation.navigation.navigate('ListUser')
             } ).catch((err) => {
+                setIsLoaded(false)
                 alert(err)
             });
         }else{
             alert("please fill the form corectly");
         }
     }
-    return(
+    return isLoaded ? (
+        <View style={styles.cercleContainer}>
+        <ActivityIndicator color="#AD84BF" size={45}/>
+        </View>
+    ) : (
         <View style={styles.container}>
+            <ImageBackground
+            blurRadius={20}
+            style={styles.image}
+            source={{ uri : 'https://c4.wallpaperflare.com/wallpaper/757/447/693/flowers-macro-roses-water-drops-wallpaper-preview.jpg'}}
+            />
             <View style={styles.formContainer}>
                 <Text style={styles.title}>Create User</Text>
             <Input
@@ -46,7 +64,7 @@ const CreateUserForm = (props) => {
             }}
             initialValue={name}
             
-            borderColor="#8F44FF"
+            borderColor="#AD84BF"
             />
             <Input
             id="email"
@@ -60,7 +78,7 @@ const CreateUserForm = (props) => {
             }}
             initialValue={email}
             email
-            borderColor="#8F44FF"
+            borderColor="#AD84BF"
             />
             <Input
             id="phone"
@@ -73,10 +91,10 @@ const CreateUserForm = (props) => {
                 setPhone(phone)
             }}
             initialValue={phone}
-            borderColor="#8F44FF"
+            borderColor="#AD84BF"
             />
             <View style={styles.button}>
-            <FormButton title='Create' onPress={submit}/>
+            <FormButton title='Create' onPress={submit} bgColor="#5B458C"/>
             </View>
             </View>
             
